@@ -151,7 +151,7 @@ button, input, a {
 
 .list-item {
   display: grid;
-  grid-template-columns: 1fr 50px 50px 50px;
+  grid-template-columns: 1fr 50px 50px 50px 50px;
   gap: 10px;
   cursor: pointer;
   margin-bottom: 20px;
@@ -214,6 +214,29 @@ button, input, a {
 }
 .list-item__remove {
   background: tomato;
+}
+.list-item__important {
+  background: transparent;
+  border: 5px solid crimson;
+  color: crimson;
+}
+.list-item__important span {
+  color: transparent;
+}
+.list-item__important:hover {
+  opacity: 0.5;
+}
+@media screen and (max-width: 768px) {
+  .list-item__important {
+    border-width: 2px;
+  }
+}
+.list-item.--isimportant .list-item__title {
+  text-decoration: underline;
+}
+.list-item.--isimportant .list-item__important span {
+  scale: 1.1;
+  color: inherit;
 }
 .list-item__mark {
   background: transparent;

@@ -1,6 +1,6 @@
 .list-item {
   display: grid;
-  grid-template-columns: 1fr 50px 50px 50px;
+  grid-template-columns: 1fr 50px 50px 50px 50px;
   gap: 10px;
   cursor: pointer;
   margin-bottom: 20px;
@@ -72,6 +72,43 @@
     background: tomato;
   }
 
+  // &__important {
+  //   background: rgb(12, 219, 46);
+  // }
+
+  &__important {
+    background: transparent;
+    border: 5px solid crimson;
+    color: crimson;
+
+    span {
+      color: transparent;
+    }
+
+    &:hover {
+      opacity: .5;
+    }
+
+    @media screen and (max-width: 768px) {
+      border-width: 2px;
+    }
+  }
+
+  &.--isimportant {
+    .list-item {
+      &__title {
+        text-decoration: underline;
+      }
+
+      &__important {
+        span {
+          scale: 1.1;
+          color: inherit;
+        }
+      }
+    }
+  }
+
   &__mark {
     background: transparent;
     border: 5px solid forestgreen;
@@ -104,6 +141,7 @@
       }
     }
   }
+
 
   @media screen and (max-width: 768px) {
     grid-template-columns:1fr 25px;

@@ -76,6 +76,10 @@ class ListItem {
             newSection.classList.add('--done')
 
         }
+        if (this.isImportant) {
+            newSection.classList.add('--isimportant')
+
+        }
 
         let content = document.createElement('div')
         content.classList.add('list-item__content')
@@ -99,6 +103,7 @@ class ListItem {
         newSection.appendChild(this.createBtn('list-item__mark', 'done', this.doneItem))
         newSection.appendChild(this.createBtn('list-item__edit', 'edit', this.startEditItem))
         newSection.appendChild(this.createBtn('list-item__remove', 'delete', this.removeItem))
+        newSection.appendChild(this.createBtn('list-item__important', 'priority_high', this.importantItem))
 
         List.appendChild(newSection)
     }
@@ -114,6 +119,18 @@ class ListItem {
         console.log(listArray)
         localStorage.setItem('list', JSON.stringify(listArray))
 
+    }
+
+    importantItem(target){
+        let item = target.closest('.list-item')
+        item.classList.toggle('--isimportant')
+        let itemInArray = listArray.find(
+            (todo) => +todo.listId === +item.getAttribute('data-id')
+        )
+        itemInArray.isImportant = !itemInArray.isImportant
+
+        console.log(listArray)
+        localStorage.setItem('list', JSON.stringify(listArray))
     }
 
     createBtn(btnClass, btnIcon, callback) {
@@ -181,9 +198,9 @@ createForm.onsubmit = function (event) {
             })
         } else {
             if (inputs.type.value === 'task') {
-                item = new Task(inputs.name.value, inputs.desc.value, inputs.deadline.value, false)
+                item = new Task(inputs.name.value, inputs.desc.value, inputs.deadline.value, false, false)
             } else if (inputs.type.value === 'purchase') {
-                item = new Purchase(inputs.name.value, inputs.desc.value, inputs.deadline.value, false)
+                item = new Purchase(inputs.name.value, inputs.desc.value, inputs.deadline.value, false, false)
             }
             item.addItem()
         }
@@ -199,9 +216,9 @@ if (JSON.parse(localStorage.getItem('list'))?.length) {
     JSON.parse(localStorage.getItem('list')).forEach(item => {
         let newItem;
         if (item.type === 'task') {
-            newItem = new Task(item.name, item.desc, item.deadline, item.isDone)
+            newItem = new Task(item.name, item.desc, item.deadline, item.isDone, item.isImportant)
         } else if (item.type === 'purchase') {
-            newItem = new Purchase(item.name, item.desc, item.deadline, item.isDone)
+            newItem = new Purchase(item.name, item.desc, item.deadline, item.isDone, item.isImportant)
         }
         newItem.addItem()
     })
