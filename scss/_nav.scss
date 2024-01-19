@@ -1,0 +1,27 @@
+.nav{
+    &__list{
+        display: flex;
+        list-style: none;
+        gap: 15px;
+        padding-top: 20px;
+        padding-left: 20px;
+    }
+    &__link{
+        text-decoration: none;
+        background-clip: text;
+        background-image: var(--gradient);
+        color: transparent;
+        background-size: 125%;
+        animation: floating-gradient 2.5s infinite alternate;
+        font-size: 20px;
+        font-weight: 700;
+        &_active{
+            color: var(--text-color);
+            border-bottom: 2px solid currentColor;
+        }
+        &:hover,
+        &:focus{
+            color: var(--text-color);
+        }
+    }
+}

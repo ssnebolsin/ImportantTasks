@@ -2,6 +2,7 @@ let listArray = []
 let counter = 0
 const createForm = document.forms.createForm
 const List = document.querySelector('.list')
+const ImportantList = document.querySelector('.important-list-wrapper')
 let editIndex = -1;
 
 /* modules/ListItem.js */
@@ -105,7 +106,19 @@ class ListItem {
         newSection.appendChild(this.createBtn('list-item__remove', 'delete', this.removeItem))
         newSection.appendChild(this.createBtn('list-item__important', 'priority_high', this.importantItem))
 
-        List.appendChild(newSection)
+        // List.appendChild(newSection)
+        // ImportantList.appendChild(newSection)
+
+        if(List){
+            List.appendChild(newSection)
+        } else if (ImportantList) {
+            this.isImportant ? ImportantList.appendChild(newSection) : true
+        }
+
+    }
+
+    renderOnlyImportantItem(){
+
     }
 
     doneItem(target) {
@@ -151,16 +164,16 @@ class ListItem {
 
 /* modules/Task.js */
 class Task extends ListItem {
-    constructor(name, desc, deadline, isDone, assignee) {
-        super('task', name, desc, deadline, isDone);
+    constructor(name, desc, deadline, isDone, isImportant, assignee) {
+        super('task', name, desc, deadline, isDone, isImportant);
         this.assignee = assignee
     }
 }
 
 /* modules/Purchase.js */
 class Purchase extends ListItem {
-    constructor(name, desc, deadline, isDone, quantity) {
-        super('purchase', name, desc, deadline, isDone);
+    constructor(name, desc, deadline, isDone, isImportant, quantity) {
+        super('purchase', name, desc, deadline, isDone, isImportant);
         this.quantity = quantity
     }
 }
@@ -225,6 +238,9 @@ if (JSON.parse(localStorage.getItem('list'))?.length) {
 } else {
     localStorage.setItem('list', JSON.stringify(listArray))
 }
+
+let listArrayImportant = listArray.filter((element) => element.isImportant === true);
+console.log(listArrayImportant)
 
 /* Services */
 function formatNumber(num) {

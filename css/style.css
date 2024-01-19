@@ -276,4 +276,29 @@ button, input, a {
   margin-bottom: 25px;
 }
 
+.nav__list {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+  padding-top: 20px;
+  padding-left: 20px;
+}
+.nav__link {
+  text-decoration: none;
+  background-clip: text;
+  background-image: var(--gradient);
+  color: transparent;
+  background-size: 125%;
+  animation: floating-gradient 2.5s infinite alternate;
+  font-size: 20px;
+  font-weight: 700;
+}
+.nav__link_active {
+  color: var(--text-color);
+  border-bottom: 2px solid currentColor;
+}
+.nav__link:hover, .nav__link:focus {
+  color: var(--text-color);
+}
+
 /*# sourceMappingURL=style.css.map */
