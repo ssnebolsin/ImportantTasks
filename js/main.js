@@ -6,13 +6,14 @@ let editIndex = -1;
 
 /* modules/ListItem.js */
 class ListItem {
-    constructor(type, name, desc, deadline, isDone) {
+    constructor(type, name, desc, deadline, isDone, isImportant) {
         this.type = type
         this.name = name
         this.desc = desc
         this.listId = counter
         this.deadline = deadline
         this.isDone = isDone
+        this.isImportant = isImportant
     }
 
     addItem() {
@@ -23,6 +24,7 @@ class ListItem {
             listId: this.listId,
             deadline: this.deadline,
             isDone: this.isDone,
+            isImportant: this.isImportant
         })
 
         this.renderItem()
