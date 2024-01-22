@@ -1,6 +1,7 @@
 let listArray = []
 let counter = 0
-const createForm = document.forms.createForm
+const createForm = document.forms.createForm ? document.forms.createForm : document.forms.createFormImportantItems
+let formType = createForm.getAttribute('name')
 const List = document.querySelector('.list')
 const ImportantList = document.querySelector('.important-list-wrapper')
 let editIndex = -1;
@@ -117,10 +118,6 @@ class ListItem {
 
     }
 
-    renderOnlyImportantItem(){
-
-    }
-
     doneItem(target) {
         let item = target.closest('.list-item')
         item.classList.toggle('--done')
@@ -137,6 +134,10 @@ class ListItem {
     importantItem(target){
         let item = target.closest('.list-item')
         item.classList.toggle('--isimportant')
+        if (formType === 'createFormImportantItems'){
+            item.remove()
+        }
+        
         let itemInArray = listArray.find(
             (todo) => +todo.listId === +item.getAttribute('data-id')
         )
@@ -178,50 +179,13 @@ class Purchase extends ListItem {
     }
 }
 
+
+
+// console.log(createFormImportantItems)
 createForm.onsubmit = function (event) {
     event.preventDefault();
     const inputs = event.target.elements
-
-    if (inputs.name.value.length >= 5 && inputs.deadline.value) {
-        let item
-
-        if (editIndex >= 0) {
-            item = document.querySelector(`[data-id="${editIndex}"]`)
-
-            // Оновити старі дані за допомогою InnerText
-            item.querySelector('h3').innerText = inputs.name.value
-            item.querySelector('p').innerText = inputs.desc.value
-            item.querySelector('time').innerText = inputs.deadline.value
-            item.setAttribute('data-type', inputs.type.value)
-
-            let indexToUpdate = listArray.findIndex((item) => +item.listId === editIndex)
-            // Оновити старі дані в масиві
-            listArray[indexToUpdate] = {
-                ...listArray[editIndex],
-                name: inputs.name.value,
-                desc: inputs.desc.value,
-                deadline: inputs.deadline.value,
-                type: inputs.type.value,
-            }
-            createForm.elements.button.innerText = 'Додати +'
-            editIndex = -1;
-            item.scrollIntoView({
-                alignToTop: true,
-                behavior: 'smooth'
-            })
-        } else {
-            if (inputs.type.value === 'task') {
-                item = new Task(inputs.name.value, inputs.desc.value, inputs.deadline.value, false, false)
-            } else if (inputs.type.value === 'purchase') {
-                item = new Purchase(inputs.name.value, inputs.desc.value, inputs.deadline.value, false, false)
-            }
-            item.addItem()
-        }
-        localStorage.setItem('list', JSON.stringify(listArray))
-        event.target.reset()
-    } else {
-        alert('fill all required fields')
-    }
+    formSubmitAction(inputs, formType)
 }
 
 
@@ -256,5 +220,48 @@ function formatDate(year, month, day) {
     }
 }
 
+function formSubmitAction(inputs, formType) {
+    if (inputs.name.value.length >= 5 && inputs.deadline.value) {
+        let item
+
+        if (editIndex >= 0) {
+            item = document.querySelector(`[data-id="${editIndex}"]`)
+
+            // Оновити старі дані за допомогою InnerText
+            item.querySelector('h3').innerText = inputs.name.value
+            item.querySelector('p').innerText = inputs.desc.value
+            item.querySelector('time').innerText = inputs.deadline.value
+            item.setAttribute('data-type', inputs.type.value)
+
+            let indexToUpdate = listArray.findIndex((item) => +item.listId === editIndex)
+            // Оновити старі дані в масиві
+            listArray[indexToUpdate] = {
+                ...listArray[editIndex],
+                name: inputs.name.value,
+                desc: inputs.desc.value,
+                deadline: inputs.deadline.value,
+                type: inputs.type.value,
+            }
+            createForm.elements.button.innerText = 'Додати +'
+            editIndex = -1;
+            item.scrollIntoView({
+                alignToTop: true,
+                behavior: 'smooth'
+            })
+        } else {
+            if (inputs.type.value === 'task') {
+                console.log(formType)    
+                item = new Task(inputs.name.value, inputs.desc.value, inputs.deadline.value, false, formType === 'createFormImportantItems' ? true : false)
+            } else if (inputs.type.value === 'purchase') {
+                item = new Purchase(inputs.name.value, inputs.desc.value, inputs.deadline.value, false, formType === 'createFormImportantItems' ? true : false)
+            }
+            item.addItem()
+        }
+        localStorage.setItem('list', JSON.stringify(listArray))
+        event.target.reset()
+    } else {
+        alert('fill all required fields')
+    }
+}
 
 // sessionStorage.setItem('test', 'test 12312')
